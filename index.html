@@ -2,95 +2,1003 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>⚔️ The Arcane Emporium</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Joydip Bhattacharya — Graphic Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #111111;
+      --bg3: #161616;
+      --accent: #00ff7f;
+      --accent-dim: rgba(0,255,127,0.12);
+      --accent-glow: rgba(0,255,127,0.35);
+      --text: #f0f0f0;
+      --text-muted: #666;
+      --text-mid: #aaa;
+      --border: rgba(255,255,255,0.07);
+      --font: 'Raleway', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── CUSTOM CURSOR ─────────────────────────────────────── */
+    #cursor {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+    #cursor-dot {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      transition: transform .12s ease, width .3s, height .3s, opacity .3s;
+      opacity: 0.5;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring {
+      width: 56px; height: 56px; opacity: 1;
+    }
+
+    /* ── NOISE OVERLAY ─────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+    }
+
+    /* ── NAV ───────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: padding .4s;
+    }
+    nav.scrolled { padding: 1rem 4rem; }
+    .nav-logo {
+      font-size: .75rem; font-weight: 700; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .7rem; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--text-muted);
+      position: relative;
+      transition: color .3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width .35s ease;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    #home {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start;
+      padding: 0 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,255,127,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,127,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-glow {
+      position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,255,127,0.08) 0%, transparent 70%);
+      top: 50%; left: 30%; transform: translate(-50%,-50%);
+      pointer-events: none; z-index: 0;
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0%,100% { opacity: .5; transform: translate(-50%,-50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%,-50%) scale(1.15); }
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-label {
+      font-size: .65rem; font-weight: 700; letter-spacing: .35em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .8s .2s forwards;
+    }
+    .hero-name {
+      font-size: clamp(3.5rem, 9vw, 9rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.02em;
+      opacity: 0; transform: translateY(40px);
+      animation: fadeUp .9s .4s forwards;
+    }
+    .hero-name span { color: var(--accent); }
+    .hero-subtitle {
+      font-size: clamp(.9rem, 1.5vw, 1.15rem);
+      font-weight: 300; letter-spacing: .12em;
+      color: var(--text-muted); margin-top: 1.5rem;
+      text-transform: uppercase;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .8s .7s forwards;
+    }
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex; gap: 1.2rem; align-items: center;
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .8s 1s forwards;
+    }
+    .btn-primary {
+      display: inline-block; padding: .85rem 2.5rem;
+      background: var(--accent); color: #000;
+      font-family: var(--font); font-size: .7rem; font-weight: 800;
+      letter-spacing: .2em; text-transform: uppercase; text-decoration: none;
+      border: none; cursor: none;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      transition: background .3s, transform .2s;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    .btn-secondary {
+      font-size: .7rem; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: color .3s, border-color .3s;
+    }
+    .btn-secondary:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      opacity: 0; animation: fadeUp .8s 1.5s forwards;
+    }
+    .hero-scroll-hint span {
+      font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: .3; }
+      50% { opacity: 1; }
+    }
+
+    /* ── SECTION BASE ──────────────────────────────────────── */
+    section { padding: 7rem 4rem; position: relative; }
+    .section-header {
+      margin-bottom: 4rem;
+      display: flex; align-items: baseline; gap: 1.5rem;
+    }
+    .section-num {
+      font-size: .65rem; font-weight: 700; letter-spacing: .3em;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800; letter-spacing: -.02em; line-height: 1;
+    }
+    .section-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
+
+    /* ── CATEGORY TILES ────────────────────────────────────── */
+    #work { background: var(--bg); }
+    .work-intro {
+      font-size: .75rem; font-weight: 400; letter-spacing: .1em;
+      color: var(--text-muted); text-transform: uppercase;
+      margin-bottom: 3rem; max-width: 400px; line-height: 1.8;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .category-tile {
+      background: var(--bg2);
+      padding: 3.5rem;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      min-height: 280px;
+      cursor: none;
+      position: relative; overflow: hidden;
+      transition: background .4s;
+      text-decoration: none; color: inherit;
+    }
+    .category-tile::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--accent-dim) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .category-tile:hover::before { opacity: 1; }
+    .category-tile:hover { background: var(--bg3); }
+    .category-tile:hover .tile-arrow { transform: translate(4px,-4px); color: var(--accent); }
+    .tile-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .tile-num {
+      font-size: .6rem; font-weight: 700; letter-spacing: .3em;
+      color: var(--accent); text-transform: uppercase;
+    }
+    .tile-arrow {
+      font-size: 1.4rem; color: var(--text-muted);
+      transition: transform .35s ease, color .3s;
+    }
+    .tile-icon {
+      font-size: 2.5rem; margin: 1rem 0;
+      display: block;
+      transition: transform .4s ease;
+    }
+    .category-tile:hover .tile-icon { transform: scale(1.1) rotate(-5deg); }
+    .tile-name {
+      font-size: 1.6rem; font-weight: 800; letter-spacing: -.01em;
+      margin-top: auto;
+    }
+    .tile-count {
+      font-size: .65rem; font-weight: 500; letter-spacing: .2em;
+      color: var(--text-muted); text-transform: uppercase; margin-top: .4rem;
+    }
+
+    /* ── CATEGORY SECTIONS ─────────────────────────────────── */
+    .category-section { border-top: 1px solid var(--border); }
+    .category-section:nth-child(even) { background: var(--bg2); }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .project-card {
+      background: var(--bg);
+      overflow: hidden;
+      position: relative;
+      cursor: none;
+    }
+    .category-section:nth-child(even) .project-card { background: var(--bg2); }
+    .project-img {
+      width: 100%; aspect-ratio: 4/3;
+      background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .project-img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--bg3) 0%, #1a1a1a 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .75rem;
+      transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+    }
+    .project-card:hover .project-img-placeholder { transform: scale(1.04); }
+    .placeholder-icon { font-size: 2.5rem; opacity: .25; }
+    .placeholder-label {
+      font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 600;
+    }
+    .project-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 50%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .project-card:hover .project-img-overlay { opacity: 1; }
+    .project-info {
+      padding: 1.8rem;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+    .project-info::before {
+      content: '';
+      position: absolute; top: 0; left: 1.8rem;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width .5s ease;
+    }
+    .project-card:hover .project-info::before { width: calc(100% - 3.6rem); }
+    .project-title {
+      font-size: 1rem; font-weight: 700; letter-spacing: -.01em;
+      margin-bottom: .5rem;
+    }
+    .project-desc {
+      font-size: .75rem; font-weight: 400; line-height: 1.7;
+      color: var(--text-muted); margin-bottom: 1rem;
+    }
+    .project-tools {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+    }
+    .tool-tag {
+      font-size: .55rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--accent);
+      border: 1px solid rgba(0,255,127,0.25);
+      padding: .25rem .6rem;
+      transition: background .3s, border-color .3s;
+    }
+    .project-card:hover .tool-tag {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+
+    /* ── ABOUT ─────────────────────────────────────────────── */
+    #about { background: var(--bg2); border-top: 1px solid var(--border); }
+    .about-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+      align-items: start;
+    }
+    .about-bio {
+      font-size: 1rem; font-weight: 300; line-height: 2;
+      color: var(--text-mid);
+    }
+    .about-bio strong { color: var(--text); font-weight: 700; }
+    .about-bio .accent { color: var(--accent); }
+    .about-stats { display: flex; flex-direction: column; gap: 2rem; }
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);
+    }
+    .stat-label {
+      font-size: .65rem; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .stat-val {
+      font-size: 2.5rem; font-weight: 900; color: var(--accent);
+      line-height: 1;
+    }
+    .skills-list { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+    .skill-chip {
+      font-size: .6rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; padding: .4rem 1rem;
+      border: 1px solid var(--border); color: var(--text-muted);
+      transition: all .3s;
+    }
+    .skill-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent); background: var(--accent-dim);
+    }
+
+    /* ── CONTACT ───────────────────────────────────────────── */
+    #contact { background: var(--bg); border-top: 1px solid var(--border); }
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start;
+    }
+    .contact-headline {
+      font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900; line-height: 1.1;
+      letter-spacing: -.02em;
+    }
+    .contact-headline span { color: var(--accent); }
+    .contact-sub {
+      font-size: .8rem; font-weight: 300; color: var(--text-muted);
+      line-height: 1.8; margin-top: 1.5rem; max-width: 380px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1.5rem;
+      text-decoration: none; color: var(--text);
+      padding: 1.5rem 2rem;
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: border-color .3s;
+    }
+    .contact-link::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--accent-dim);
+      transform: translateX(-100%);
+      transition: transform .4s ease;
+    }
+    .contact-link:hover::before { transform: translateX(0); }
+    .contact-link:hover { border-color: var(--accent); }
+    .contact-link:hover .cl-label { color: var(--accent); }
+    .cl-icon { font-size: 1.2rem; position: relative; z-index: 1; }
+    .cl-info { position: relative; z-index: 1; }
+    .cl-type {
+      font-size: .55rem; font-weight: 700; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .cl-label {
+      font-size: .9rem; font-weight: 600;
+      transition: color .3s;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────────── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg);
+    }
+    .footer-copy {
+      font-size: .6rem; font-weight: 500; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .footer-mark {
+      font-size: .6rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--accent);
+    }
+
+    /* ── SCROLL ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .8s cubic-bezier(.25,.46,.45,.94),
+                  transform .8s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-50px);
+      transition: opacity .8s cubic-bezier(.25,.46,.45,.94),
+                  transform .8s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(50px);
+      transition: opacity .8s cubic-bezier(.25,.46,.45,.94),
+                  transform .8s cubic-bezier(.25,.46,.45,.94);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger > * {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s cubic-bezier(.25,.46,.45,.94),
+                  transform .7s cubic-bezier(.25,.46,.45,.94);
+    }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+    .stagger.visible > *:nth-child(1) { transition-delay: .05s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: .15s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: .25s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: .35s; }
+    .stagger.visible > *:nth-child(5) { transition-delay: .45s; }
+    .stagger.visible > *:nth-child(6) { transition-delay: .55s; }
+
+    /* ── ACTIVE NAV ────────────────────────────────────────── */
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.active::after { width: 100%; }
+
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      section { padding: 5rem 2rem; }
+      .category-grid { grid-template-columns: 1fr; }
+      .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+      #home { padding: 0 2rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+      .nav-links { gap: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Ambient background particles -->
-  <div class="bg-layer" aria-hidden="true">
-    <div class="ember" style="--d:2s;--x:10%;--s:0.4"></div>
-    <div class="ember" style="--d:3.5s;--x:25%;--s:0.6"></div>
-    <div class="ember" style="--d:2.8s;--x:40%;--s:0.3"></div>
-    <div class="ember" style="--d:4s;--x:55%;--s:0.7"></div>
-    <div class="ember" style="--d:1.9s;--x:70%;--s:0.5"></div>
-    <div class="ember" style="--d:3.2s;--x:85%;--s:0.4"></div>
-    <div class="ember" style="--d:2.5s;--x:92%;--s:0.6"></div>
-  </div>
+<!-- Custom Cursor -->
+<div id="cursor">
+  <div id="cursor-ring"></div>
+  <div id="cursor-dot"></div>
+</div>
 
-  <!-- Header -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="shop-brand">
-        <span class="brand-icon">⚗️</span>
-        <div>
-          <h1 class="shop-title">The Arcane Emporium</h1>
-          <p class="shop-tagline">Rare wares for the worthy adventurer</p>
+<!-- Navigation -->
+<nav id="nav">
+  <a href="#home" class="nav-logo">JB</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#print">Print</a></li>
+    <li><a href="#social">Social</a></li>
+    <li><a href="#logo">Logo</a></li>
+    <li><a href="#motion">Motion</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-label">Portfolio · Graphic Design</p>
+    <h1 class="hero-name">Joydip<br><span>Bhatta&shy;charya</span></h1>
+    <p class="hero-subtitle">Graphic Designer &nbsp;·&nbsp; Visual Storyteller</p>
+    <div class="hero-cta">
+      <a href="#work" class="btn-primary">View Work</a>
+      <a href="#contact" class="btn-secondary">Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── WORK OVERVIEW ─────────────────────────────────────── -->
+<section id="work" style="padding-bottom:0;">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Work</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="work-intro reveal">Select a discipline to explore the work — each project built with intention, craft, and a relentless eye for detail.</p>
+  <div class="category-grid stagger">
+    <a href="#print" class="category-tile">
+      <div class="tile-top">
+        <span class="tile-num">01</span>
+        <span class="tile-arrow">↗</span>
+      </div>
+      <span class="tile-icon">🖨</span>
+      <div>
+        <div class="tile-name">Print Work</div>
+        <div class="tile-count">Posters · Brochures · Editorial</div>
+      </div>
+    </a>
+    <a href="#social" class="category-tile">
+      <div class="tile-top">
+        <span class="tile-num">02</span>
+        <span class="tile-arrow">↗</span>
+      </div>
+      <span class="tile-icon">📱</span>
+      <div>
+        <div class="tile-name">Social Media</div>
+        <div class="tile-count">Campaigns · Posts · Stories</div>
+      </div>
+    </a>
+    <a href="#logo" class="category-tile">
+      <div class="tile-top">
+        <span class="tile-num">03</span>
+        <span class="tile-arrow">↗</span>
+      </div>
+      <span class="tile-icon">◈</span>
+      <div>
+        <div class="tile-name">Logo &amp; Identity</div>
+        <div class="tile-count">Logos · Brand Systems · Case Studies</div>
+      </div>
+    </a>
+    <a href="#motion" class="category-tile">
+      <div class="tile-top">
+        <span class="tile-num">04</span>
+        <span class="tile-arrow">↗</span>
+      </div>
+      <span class="tile-icon">▶</span>
+      <div>
+        <div class="tile-name">Motion Design</div>
+        <div class="tile-count">Animation · Title Sequences · Reels</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ── PRINT WORK ─────────────────────────────────────────── -->
+<section id="print" class="category-section" style="padding-top:5rem;">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Print Work</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="project-grid stagger">
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">🖨</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the project — what it was for, what problem it solved, and what makes it stand out.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">InDesign</span>
         </div>
       </div>
-      <div class="header-gold">
-        <span class="gold-icon">🪙</span>
-        <span id="gold-display">1,500 Gold</span>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">🖨</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the project — what it was for, what problem it solved, and what makes it stand out.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">InDesign</span>
+        </div>
       </div>
     </div>
-  </header>
-
-  <!-- Search & Filter Bar -->
-  <nav class="filter-bar" role="navigation" aria-label="Shop filters">
-    <div class="filter-inner">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input
-          type="text"
-          id="search-input"
-          class="search-input"
-          placeholder="Search items…"
-          aria-label="Search items"
-        />
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">🖨</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
       </div>
-      <div class="category-pills" role="group" aria-label="Filter by category">
-        <button class="pill active" data-category="all">All Items</button>
-        <button class="pill" data-category="weapon">⚔️ Weapons</button>
-        <button class="pill" data-category="armor">🛡️ Armor</button>
-        <button class="pill" data-category="potion">🧪 Potions</button>
-        <button class="pill" data-category="accessory">💍 Accessories</button>
-        <button class="pill" data-category="scroll">📜 Scrolls</button>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the project — what it was for, what problem it solved, and what makes it stand out.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">Photoshop</span>
+        </div>
       </div>
     </div>
-  </nav>
-
-  <!-- Results count -->
-  <div class="results-info" aria-live="polite">
-    <span id="item-count">12 items</span> available in the shop
   </div>
+</section>
 
-  <!-- Item Grid -->
-  <main class="shop-grid" id="shop-grid" aria-label="Shop items">
-    <!-- Cards injected by JS -->
-  </main>
-
-  <!-- Empty state -->
-  <div class="empty-state hidden" id="empty-state" aria-hidden="true">
-    <span class="empty-icon">🗺️</span>
-    <p>No items found. Try a different search or category.</p>
+<!-- ── SOCIAL MEDIA ───────────────────────────────────────── -->
+<section id="social" class="category-section">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Social Media</h2>
+    <div class="section-line"></div>
   </div>
-
-  <!-- Item Detail Modal -->
-  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-    <div class="modal-card">
-      <button class="modal-close" id="modal-close" aria-label="Close item detail">✕</button>
-      <div class="modal-content" id="modal-content"></div>
+  <div class="project-grid stagger">
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">📱</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the campaign or content series — platform, objective, and visual approach.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">Canva</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">📱</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the campaign or content series — platform, objective, and visual approach.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">Figma</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">📱</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Replace this with a short description of the campaign or content series — platform, objective, and visual approach.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">After Effects</span>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Toast notification -->
-  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+<!-- ── LOGO & IDENTITY ────────────────────────────────────── -->
+<section id="logo" class="category-section">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Logo &amp; Identity</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="project-grid stagger">
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">◈</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the brand identity project — the client, the challenge, the concept behind the mark, and what the system includes.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">Brand Strategy</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">◈</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the brand identity project — the client, the challenge, the concept behind the mark, and what the system includes.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">Figma</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">◈</span>
+          <span class="placeholder-label">Add your image here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the brand identity project — the client, the challenge, the concept behind the mark, and what the system includes.</div>
+        <div class="project-tools">
+          <span class="tool-tag">Illustrator</span>
+          <span class="tool-tag">Photoshop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script src="js/items.js"></script>
-  <script src="js/shop.js"></script>
+<!-- ── MOTION DESIGN ──────────────────────────────────────── -->
+<section id="motion" class="category-section">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Motion Design</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="project-grid stagger">
+    <div class="project-card">
+      <div class="project-img" style="position:relative;">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">▶</span>
+          <span class="placeholder-label">Add your video / GIF here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the motion piece — the brief, the style, duration, and what makes the animation compelling or unique.</div>
+        <div class="project-tools">
+          <span class="tool-tag">After Effects</span>
+          <span class="tool-tag">Premiere Pro</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">▶</span>
+          <span class="placeholder-label">Add your video / GIF here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the motion piece — the brief, the style, duration, and what makes the animation compelling or unique.</div>
+        <div class="project-tools">
+          <span class="tool-tag">After Effects</span>
+          <span class="tool-tag">Illustrator</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-img">
+        <div class="project-img-placeholder">
+          <span class="placeholder-icon">▶</span>
+          <span class="placeholder-label">Add your video / GIF here</span>
+        </div>
+        <div class="project-img-overlay"></div>
+      </div>
+      <div class="project-info">
+        <div class="project-title">Project Title</div>
+        <div class="project-desc">Describe the motion piece — the brief, the style, duration, and what makes the animation compelling or unique.</div>
+        <div class="project-tools">
+          <span class="tool-tag">After Effects</span>
+          <span class="tool-tag">Cinema 4D</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ──────────────────────────────────────────────── -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">05</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-layout">
+    <div class="about-bio reveal-left">
+      <p>I'm <strong>Joydip Bhattacharya</strong>, a graphic designer with a passion for creating work that doesn't just look good — it <span class="accent">communicates</span>, resonates, and endures.</p>
+      <br>
+      <p>From bold print campaigns to intricate brand identities, from scroll-stopping social visuals to fluid motion sequences — I approach every brief with the same level of <strong>intention and craft</strong>.</p>
+      <br>
+      <p>Design, for me, is problem-solving with a visual vocabulary. Every project is an opportunity to say something <span class="accent">meaningful</span>, beautifully.</p>
+      <div class="skills-list">
+        <span class="skill-chip">Brand Identity</span>
+        <span class="skill-chip">Print Design</span>
+        <span class="skill-chip">Motion Graphics</span>
+        <span class="skill-chip">Social Media</span>
+        <span class="skill-chip">Typography</span>
+        <span class="skill-chip">Art Direction</span>
+        <span class="skill-chip">Adobe CC</span>
+        <span class="skill-chip">Figma</span>
+      </div>
+    </div>
+    <div class="about-stats reveal-right">
+      <div class="stat-row">
+        <span class="stat-label">Years of Experience</span>
+        <span class="stat-val">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Projects Completed</span>
+        <span class="stat-val">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Clients Served</span>
+        <span class="stat-val">—</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Based In</span>
+        <span class="stat-val" style="font-size:1.2rem;letter-spacing:-.01em;">India</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-layout">
+    <div class="reveal-left">
+      <h3 class="contact-headline">Let's make<br>something <span>great.</span></h3>
+      <p class="contact-sub">Have a project in mind? A brand to build? A campaign to launch? I'd love to hear about it. Reach out and let's start the conversation.</p>
+    </div>
+    <div class="contact-links stagger">
+      <a href="mailto:your@email.com" class="contact-link">
+        <span class="cl-icon">✉</span>
+        <div class="cl-info">
+          <div class="cl-type">Email</div>
+          <div class="cl-label">your@email.com</div>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link">
+        <span class="cl-icon">in</span>
+        <div class="cl-info">
+          <div class="cl-type">LinkedIn</div>
+          <div class="cl-label">Joydip Bhattacharya</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <span class="footer-copy">© 2025 Joydip Bhattacharya. All rights reserved.</span>
+  <span class="footer-mark">JB ↗</span>
+</footer>
+
+<script>
+  /* ── Custom Cursor ─ */
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  /* ── Nav scroll ─ */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* ── Active nav link ─ */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+
+  /* ── Scroll reveal ─ */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const staggerEls = document.querySelectorAll('.stagger');
+
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach(el => ro.observe(el));
+  staggerEls.forEach(el => ro.observe(el));
+
+  /* ── Parallax hero glow ─ */
+  const glow = document.querySelector('.hero-glow');
+  window.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 40;
+    const y = (e.clientY / window.innerHeight - 0.5) * 40;
+    glow.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+  });
+
+  /* ── Stats counter ─ */
+  function animateVal(el, end, prefix='', suffix='') {
+    if (el.dataset.animated) return;
+    el.dataset.animated = '1';
+    let start = 0;
+    const dur = 1800;
+    const step = timestamp => {
+      if (!start) start = timestamp;
+      const prog = Math.min((timestamp - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - prog, 3);
+      el.textContent = prefix + Math.round(ease * end) + suffix;
+      if (prog < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+</script>
 </body>
 </html>
